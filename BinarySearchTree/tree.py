@@ -64,6 +64,12 @@ class BST:
             return self._find(x, self.root)
 
     def _find(self, x: int, c_node: Node) -> Union[None, Node]:
+        """
+        Recursive function of _find
+        :param x:
+        :param c_node:
+        :return:
+        """
 
         if x == c_node.value:
             return c_node
@@ -73,6 +79,21 @@ class BST:
             return self._find(x, c_node.r_child)
         else:
             return None
+
+    def height(self) -> int:
+
+        if self.root is None:
+            return 0
+        else:
+            return self._height(self.root, 0)
+
+    def _height(self, c_node: Node, c_height: int) -> int:
+        if c_node is None:
+            return c_height
+
+        l_height = self._height(c_node.l_child, c_height+1)
+        r_height = self._height(c_node.r_child, c_height + 1)
+        return max(l_height, r_height)
 
     def dfs_walk(self) -> Union[None, List[int]]:
         """

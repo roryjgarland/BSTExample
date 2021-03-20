@@ -15,17 +15,34 @@ class TreeTest(unittest.TestCase):
         self.assertEqual(14, self.tree.root.value)
 
     def test_find_method(self) -> None:
-        self.tree.insert(14)
+        self.tree.insert(7)
+        self.tree.insert(12)
         self.tree.insert(5)
-        self.tree.insert(23)
-        self.tree.insert(9)
-        self.tree.insert(32)
+        self.tree.insert(3)
+        self.tree.insert(6)
+        self.tree.insert(4)
+        self.tree.insert(13)
+        self.tree.insert(8)
 
-        value_in_tree = self.tree.find(23)
+        value_in_tree = self.tree.find(13)
         self.assertIsInstance(value_in_tree, Node)
-        self.assertEqual(value_in_tree.value, 23)
+        self.assertEqual(value_in_tree.value, 13)
 
         self.assertIsNone(self.tree.find(43))
+
+    def test_height_method(self):
+        self.tree.insert(7)
+        self.tree.insert(12)
+        self.tree.insert(5)
+        self.tree.insert(3)
+        self.tree.insert(6)
+        self.tree.insert(4)
+        self.tree.insert(13)
+        self.tree.insert(8)
+
+        height_tree = self.tree.height()
+
+        self.assertEqual(height_tree, 4)
 
     def test_inorder_method(self) -> None:
         """
@@ -55,4 +72,3 @@ class TreeTest(unittest.TestCase):
         tree_nodes_v = [n.value for n in tree_nodes]
 
         self.assertListEqual(tree_nodes_v, result)
-
