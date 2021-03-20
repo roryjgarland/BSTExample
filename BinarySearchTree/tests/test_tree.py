@@ -26,3 +26,33 @@ class TreeTest(unittest.TestCase):
         self.assertEqual(value_in_tree.value, 23)
 
         self.assertIsNone(self.tree.find(43))
+
+    def test_inorder_method(self) -> None:
+        """
+        Tree example
+                    7
+                5     12
+              3  6   8  13
+               4
+
+        This should return: 3, 4, 5, 6, 7, 8, 12, 13 (i.e. in order)
+
+        :return:
+        """
+
+        result = [3, 4, 5, 6, 7, 8, 12, 13]
+
+        self.tree.insert(7)
+        self.tree.insert(12)
+        self.tree.insert(5)
+        self.tree.insert(3)
+        self.tree.insert(6)
+        self.tree.insert(4)
+        self.tree.insert(13)
+        self.tree.insert(8)
+
+        tree_nodes = self.tree.dfs_walk()
+        tree_nodes_v = [n.value for n in tree_nodes]
+
+        self.assertListEqual(tree_nodes_v, result)
+

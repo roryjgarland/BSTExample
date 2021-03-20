@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, List
 
 
 class Node:
@@ -74,15 +74,32 @@ class BST:
         else:
             return None
 
+    def dfs_walk(self) -> Union[None, List[int]]:
+        """
+        This performs an inorder traversal method of the tree i.e. left - visit - right:
 
-tree = BST()
+                   7
+                5     12
+              3  6   8  13
+               4
 
-tree.insert(5)
-tree.insert(12)
-tree.insert(2)
-tree.insert(23)
-tree.insert(3)
+        This should return: 3, 4, 5, 6, 7, 8, 12, 13 (i.e. in order)
 
-test = tree.find(23)
-print(test.value)
+        :return:
+        """
 
+        inorder_l = []
+
+        if self.root is None:
+            return None
+        else:
+            return self._dfs_walk(self.root, inorder_l)
+
+    def _dfs_walk(self, c_node: Node, inorder_l) -> List[int]:
+
+        if c_node is not None:
+            self._dfs_walk(c_node.l_child, inorder_l)
+            inorder_l.append(c_node)
+            self._dfs_walk(c_node.r_child, inorder_l)
+
+        return inorder_l
