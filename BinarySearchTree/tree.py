@@ -51,7 +51,7 @@ class BST:
         else:
             print(f'You cannot have the same value twice, current_node: {c_node.value}, value: {value}!')
 
-    def find(self, x: int) -> None:
+    def find(self, x: int) -> Union[None, Node]:
         """
         Function which finds a certain node
         :param x:
@@ -61,15 +61,28 @@ class BST:
         if self.root is None:
             return None
         else:
-            self._find(x, self.root)
+            return self._find(x, self.root)
 
-    def _find(self, x: int, c_node: Node) -> Union[Node, None]:
+    def _find(self, x: int, c_node: Node) -> Union[None, Node]:
 
         if x == c_node.value:
             return c_node
         elif x < c_node.value and c_node.l_child:
-            self._find(x, c_node.l_child)
+            return self._find(x, c_node.l_child)
         elif x > c_node.value and c_node.r_child:
-            self._find(x, c_node.r_child)
+            return self._find(x, c_node.r_child)
         else:
             return None
+
+
+tree = BST()
+
+tree.insert(5)
+tree.insert(12)
+tree.insert(2)
+tree.insert(23)
+tree.insert(3)
+
+test = tree.find(23)
+print(test.value)
+
