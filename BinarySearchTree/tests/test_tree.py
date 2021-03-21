@@ -52,7 +52,7 @@ class TreeTest(unittest.TestCase):
               3  6   8  13
                4
 
-        This should return: 3, 4, 5, 6, 7, 8, 12, 13 (i.e. in order)
+        This should return: 3, 4, 5, 6, 7, 8, 12, 13
 
         :return:
         """
@@ -69,6 +69,24 @@ class TreeTest(unittest.TestCase):
         self.tree.insert(8)
 
         tree_nodes = self.tree.dfs_walk()
+        tree_nodes_v = [n.value for n in tree_nodes]
+
+        self.assertListEqual(tree_nodes_v, result)
+
+    def test_bfs_walk(self) -> None:
+
+        result = [7, 5, 12, 3, 6, 8, 13, 4]
+
+        self.tree.insert(7)
+        self.tree.insert(12)
+        self.tree.insert(5)
+        self.tree.insert(3)
+        self.tree.insert(6)
+        self.tree.insert(4)
+        self.tree.insert(13)
+        self.tree.insert(8)
+
+        tree_nodes = self.tree.bfs_walk()
         tree_nodes_v = [n.value for n in tree_nodes]
 
         self.assertListEqual(tree_nodes_v, result)

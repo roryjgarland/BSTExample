@@ -91,12 +91,14 @@ class BST:
         if c_node is None:
             return c_height
 
-        l_height = self._height(c_node.l_child, c_height+1)
+        l_height = self._height(c_node.l_child, c_height + 1)
         r_height = self._height(c_node.r_child, c_height + 1)
         return max(l_height, r_height)
 
     def dfs_walk(self) -> Union[None, List[int]]:
         """
+        Use stack here: LIFO
+
         This performs an inorder traversal method of the tree i.e. left - visit - right:
 
                    7
@@ -116,7 +118,7 @@ class BST:
         else:
             return self._dfs_walk(self.root, inorder_l)
 
-    def _dfs_walk(self, c_node: Node, inorder_l) -> List[int]:
+    def _dfs_walk(self, c_node: Node, inorder_l: List[int]) -> List[int]:
 
         if c_node is not None:
             self._dfs_walk(c_node.l_child, inorder_l)
@@ -124,3 +126,28 @@ class BST:
             self._dfs_walk(c_node.r_child, inorder_l)
 
         return inorder_l
+
+    def bfs_walk(self):
+        """
+        Breadth width search. We use a queue here: FIFO
+        """
+
+        visted_l = []
+        queue_l = []
+
+        if self.root is None:
+            return None
+
+        else:
+            queue_l.append(self.root)
+
+            while queue_l:
+                s = queue_l.pop(0)
+                visted_l.append(s)
+
+                if s.l_child is not None:
+                    queue_l.append(s.l_child)
+                if s.r_child is not None:
+                    queue_l.append(s.r_child)
+
+        return visted_l
