@@ -7,6 +7,8 @@ class TreeTest(unittest.TestCase):
 
     def setUp(self) -> None:
         self.tree = BST()
+        self.lst_un = [7, 5, 12, 3, 6, 8, 13, 4]
+        self.lst_or = [1, 2, 3, 4, 5, 6, 7, 8]
 
     def test_insert_method(self) -> None:
         self.tree.insert(14)
@@ -14,15 +16,27 @@ class TreeTest(unittest.TestCase):
         self.assertIsInstance(self.tree.root, Node)
         self.assertEqual(14, self.tree.root.value)
 
+    def test_build_method_unordered_list(self) -> None:
+        self.tree.build(self.lst_un)
+
+        mid_un = len(self.lst_un) // 2
+        root_val_un = self.lst_un[mid_un]
+
+        self.assertIsInstance(self.tree.root, Node)
+        self.assertEqual(self.tree.root.value, root_val_un)
+
+    def test_build_method_ordered_list(self) -> None:
+
+        self.tree.build(self.lst_or)
+
+        mid_or = len(self.lst_or) // 2
+        root_val_or = self.lst_or[mid_or]
+
+        self.assertIsInstance(self.tree.root, Node)
+        self.assertEqual(self.tree.root.value, root_val_or)
+
     def test_find_method(self) -> None:
-        self.tree.insert(7)
-        self.tree.insert(12)
-        self.tree.insert(5)
-        self.tree.insert(3)
-        self.tree.insert(6)
-        self.tree.insert(4)
-        self.tree.insert(13)
-        self.tree.insert(8)
+        self.tree.build(self.lst_un)
 
         value_in_tree = self.tree.find(13)
         self.assertIsInstance(value_in_tree, Node)
@@ -31,14 +45,7 @@ class TreeTest(unittest.TestCase):
         self.assertIsNone(self.tree.find(43))
 
     def test_height_method(self):
-        self.tree.insert(7)
-        self.tree.insert(12)
-        self.tree.insert(5)
-        self.tree.insert(3)
-        self.tree.insert(6)
-        self.tree.insert(4)
-        self.tree.insert(13)
-        self.tree.insert(8)
+        self.tree.build(self.lst_un)
 
         height_tree = self.tree.height()
 
@@ -49,8 +56,8 @@ class TreeTest(unittest.TestCase):
         Tree example
                     7
                 5     12
-              3  6   8  13
-               4
+              4  6   8  13
+             3
 
         This should return: 3, 4, 5, 6, 7, 8, 12, 13
 
@@ -59,14 +66,7 @@ class TreeTest(unittest.TestCase):
 
         result = [3, 4, 5, 6, 7, 8, 12, 13]
 
-        self.tree.insert(7)
-        self.tree.insert(12)
-        self.tree.insert(5)
-        self.tree.insert(3)
-        self.tree.insert(6)
-        self.tree.insert(4)
-        self.tree.insert(13)
-        self.tree.insert(8)
+        self.tree.build(self.lst_un)
 
         tree_nodes = self.tree.dfs_walk()
         tree_nodes_v = [n.value for n in tree_nodes]
@@ -74,17 +74,19 @@ class TreeTest(unittest.TestCase):
         self.assertListEqual(tree_nodes_v, result)
 
     def test_bfs_walk(self) -> None:
+        """
 
-        result = [7, 5, 12, 3, 6, 8, 13, 4]
+                   7
+                5     12
+              4  6   8  13
+            3
 
-        self.tree.insert(7)
-        self.tree.insert(12)
-        self.tree.insert(5)
-        self.tree.insert(3)
-        self.tree.insert(6)
-        self.tree.insert(4)
-        self.tree.insert(13)
-        self.tree.insert(8)
+        This should return: 7, 5, 12, 4, 6, 8, 13, 3
+        """
+
+        result = [7, 5, 12, 4, 6, 8, 13, 3]
+
+        self.tree.build(self.lst_un)
 
         tree_nodes = self.tree.bfs_walk()
         tree_nodes_v = [n.value for n in tree_nodes]

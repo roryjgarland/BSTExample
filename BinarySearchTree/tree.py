@@ -13,6 +13,21 @@ class Node:
 
 
 class BST:
+    """
+    Class which constructs a binary search tree. There are two ways to add data to this
+
+    bst = BST()
+    bst.insert(7)  # First value is always the insert value
+    bst.insert(5)
+    bst.insert(12)
+
+    OR
+
+    bst = BST()
+    bst.build([7, 5, 12])  # this list does not have to be ordered
+
+
+    """
     def __init__(self) -> None:
         self.root = None
 
@@ -54,7 +69,7 @@ class BST:
     def find(self, x: int) -> Union[None, Node]:
         """
         Function which finds a certain node
-        :param x:
+        :param x: type(int) value we are looking for
         :return:
         """
 
@@ -66,8 +81,8 @@ class BST:
     def _find(self, x: int, c_node: Node) -> Union[None, Node]:
         """
         Recursive function of _find
-        :param x:
-        :param c_node:
+        :param x: type(int) value we are looking for
+        :param c_node: type(Node) current node
         :return:
         """
 
@@ -81,6 +96,9 @@ class BST:
             return None
 
     def height(self) -> int:
+        """
+        Function which returns the height (# levels) of the tree
+        """
 
         if self.root is None:
             return 0
@@ -88,6 +106,11 @@ class BST:
             return self._height(self.root, 0)
 
     def _height(self, c_node: Node, c_height: int) -> int:
+        """
+        Recursive function for height which goes through each node
+        :param c_node: type(Node) current node
+        :param c_height: type(int) current height of tree
+        """
         if c_node is None:
             return c_height
 
@@ -95,16 +118,16 @@ class BST:
         r_height = self._height(c_node.r_child, c_height + 1)
         return max(l_height, r_height)
 
-    def dfs_walk(self) -> Union[None, List[int]]:
+    def dfs_walk(self) -> Union[None, List[Node]]:
         """
-        Use stack here: LIFO
+        Use stack here: LIFO as we want to go to the deepest value first
 
         This performs an inorder traversal method of the tree i.e. left - visit - right:
 
                    7
                 5     12
-              3  6   8  13
-               4
+              4  6   8  13
+             3
 
         This should return: 3, 4, 5, 6, 7, 8, 12, 13 (i.e. in order)
 
@@ -118,7 +141,11 @@ class BST:
         else:
             return self._dfs_walk(self.root, inorder_l)
 
-    def _dfs_walk(self, c_node: Node, inorder_l: List[int]) -> List[int]:
+    def _dfs_walk(self, c_node: Node, inorder_l: List[Node]) -> List[Node]:
+        """
+        :param c_node: type(Node) current node
+        :inorder_l: type(List[Node])) list of Nodes in order of depth
+        """
 
         if c_node is not None:
             self._dfs_walk(c_node.l_child, inorder_l)
@@ -130,9 +157,17 @@ class BST:
     def bfs_walk(self):
         """
         Breadth width search. We use a queue here: FIFO
+
+                   7
+                5     12
+              4  6   8  13
+            3
+
+        This should return: 7, 5, 12, 4, 6, 8, 13, 3
+
         """
 
-        visted_l = []
+        visited_l = []
         queue_l = []
 
         if self.root is None:
@@ -143,11 +178,54 @@ class BST:
 
             while queue_l:
                 s = queue_l.pop(0)
-                visted_l.append(s)
+                visited_l.append(s)
 
                 if s.l_child is not None:
                     queue_l.append(s.l_child)
                 if s.r_child is not None:
                     queue_l.append(s.r_child)
 
-        return visted_l
+        return visited_l
+
+    def build(self, lst: List[int]):
+        """
+        This function builds a BST from a list, tries to make the tree balanced by splitting the list in half.
+
+        :param lst: type(list) list that builds binary tree. Can be unordered
+        """
+
+        # finding the middle value to be our root
+
+        if self.root is None:
+            # sorting the list
+            lst.sort()
+            # getting middle value
+            mid = len(lst) // 2
+
+            # setting the root
+            self.insert(lst[mid])
+
+            # updating the tree
+            self._build(lst[:mid], self.root)
+            self._build(lst[mid+1:], self.root)
+
+        else:
+            print('Tree already built from list, use insert!')
+
+    def _build(self, lst: List[int], c_node: Node):
+        """
+        Function which builds a balanced tree from a list
+
+        :param lst: type(list[int]) list of integere values
+        :param c_node: type(Node) current node being looked at
+
+        """
+        if not lst:
+            return None
+
+        mid = len(lst) // 2
+
+        self.insert(lst[mid])
+
+        self._build(lst[:mid], c_node)
+        self._build(lst[mid + 1:], c_node)
